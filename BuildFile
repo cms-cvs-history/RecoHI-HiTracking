@@ -7,7 +7,7 @@
 <use name=TrackingTools/PatternTools>
 <use name=RecoPixelVertexing/PixelTriplets>
 <use name=RecoPixelVertexing/PixelTrackFitting>
-<use name=SimDataFormats/HepMCProduct>
+<use name=SimDataFormats/GeneratorProducts>
 <use name=RecoVertex/VertexTools>
 <use name=RecoVertex/KalmanVertexFit>
 <use name=RecoTracker/TkSeedGenerator>
@@ -18,7 +18,6 @@
 <use name=RecoLocalTracker/Records>
 <use name=MagneticField/Records>
 <use name=RecoPixelVertexing/PixelLowPtUtilities>
-<flags EDM_PLUGIN=1>
 <export>
  <lib name=RecoPixelVertexingPixelLowPtUtilities>
  <use name=FWCore/Framework>
@@ -30,7 +29,7 @@
  <use name=TrackingTools/PatternTools>
  <use name=RecoPixelVertexing/PixelTriplets>
  <use name=RecoPixelVertexing/PixelTrackFitting>
- <use name=SimDataFormats/HepMCProduct>
+ <use name=SimDataFormats/GeneratorProducts>
  <use name=RecoVertex/VertexTools>
  <use name=RecoVertex/KalmanVertexFit>
  <use name=RecoTracker/TkSeedGenerator>
