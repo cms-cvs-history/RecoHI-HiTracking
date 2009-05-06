@@ -47,19 +47,29 @@ public:
     edm::Handle<SiPixelRecHitCollection> recHitColl;
     ev.getByLabel(theSiPixelRecHits, recHitColl);
  
+    SiPixelRecHitCollection::id_iterator recHitIdIterator;
+    SiPixelRecHitCollection::id_iterator recHitIdIteratorBegin = (recHitColl.product())->id_begin();
+    SiPixelRecHitCollection::id_iterator recHitIdIteratorEnd   = (recHitColl.product())->id_end();
+
     int numRecHits = 0;
-    //FIXME: this can be optimized quite a bit by looping only on the per-det 'items' of DetSetVector
-    for(SiPixelRecHitCollection::const_iterator recHitIdIterator = recHitColl->begin(), recHitIdIteratorEnd = recHitColl->end();
+    for(recHitIdIterator = recHitIdIteratorBegin;
         recHitIdIterator != recHitIdIteratorEnd; recHitIdIterator++) {
-         SiPixelRecHitCollection::DetSet hits = *recHitIdIterator;
-         DetId detId = DetId(hits.detId()); // Get the Detid object
+
+         DetId detId = DetId((*recHitIdIterator).rawId()); // Get the Detid object
          unsigned int detType=detId.det();    // det type, tracker=1
          unsigned int subid=detId.subdetId(); //subdetector type, barrel=1, fpix=2
          PXBDetId pdetId = PXBDetId(detId);
          unsigned int layer=0;
          layer=pdetId.layer();
          if(detType==1 && subid==1 && layer==1) {
-             numRecHits += hits.size();
+           SiPixelRecHitCollection::range pixelrechitRange = (recHitColl.product())->get(*recHitIdIterator);
+           SiPixelRecHitCollection::const_iterator pixelrechitRangeIteratorBegin = pixelrechitRange.first;
+           SiPixelRecHitCollection::const_iterator pixelrechitRangeIteratorEnd = pixelrechitRange.second;
+           SiPixelRecHitCollection::const_iterator pixeliter;
+           for (pixeliter = pixelrechitRangeIteratorBegin ;
+              pixeliter != pixelrechitRangeIteratorEnd; ++pixeliter) {
+              numRecHits++;
+           }
          }
     }
     return numRecHits;
