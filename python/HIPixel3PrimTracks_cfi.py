@@ -1,6 +1,7 @@
 import FWCore.ParameterSet.Config as cms
 
 from RecoPixelVertexing.PixelTriplets.PixelTripletHLTGenerator_cfi import *
+from RecoPixelVertexing.PixelLowPtUtilities.ClusterShapeHitFilterESProducer_cfi import *
 
 hiPixel3PrimTracks = cms.EDFilter("PixelTrackProducer",
 
@@ -39,11 +40,13 @@ hiPixel3PrimTracks = cms.EDFilter("PixelTrackProducer",
     ),
 	
 	# Filter
-	useFilterWithES = cms.bool( False ),
+	useFilterWithES = cms.bool( True ),
     FilterPSet = cms.PSet( 
       nSigmaTipMaxTolerance = cms.double( 0.0 ),
-      ComponentName = cms.string( "PixelTrackFilterByKinematics" ),
-      nSigmaInvPtTolerance = cms.double( 0.0 ),
+      #ComponentName = cms.string( "PixelTrackFilterByKinematics" ),
+	  ComponentName = cms.string( "HIPixelTrackFilter" ),
+	  #ComponentName = cms.string( "ClusterShapeTrackFilter" ),
+      #nSigmaInvPtTolerance = cms.double( 0.0 ),
       ptMin = cms.double( 1.5 ),
       tipMax = cms.double( 0.2 ),
 	  chi2 = cms.double( 1000.0 )
