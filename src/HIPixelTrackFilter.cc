@@ -23,6 +23,16 @@ theNSigmaTipMaxTolerance( ps.getParameter<double>("nSigmaTipMaxTolerance")),
 theChi2Max( ps.getParameter<double>("chi2") )
 //theVertexCollection( ps.getParameter<string>("VertexCollection")),
 { 
+}
+
+/*****************************************************************************/
+HIPixelTrackFilter::~HIPixelTrackFilter()
+{ }
+
+/*****************************************************************************/
+bool HIPixelTrackFilter::operator() (const reco::Track* track,const PixelTrackFilter::Hits & recHits) const
+{
+	
 	
 	// Get reco vertex 
 	/*
@@ -34,17 +44,7 @@ theChi2Max( ps.getParameter<double>("chi2") )
 	   theVertex=vertices->begin();
 	 }
 	*/
-	
-}
 
-/*****************************************************************************/
-HIPixelTrackFilter::~HIPixelTrackFilter()
-{ }
-
-/*****************************************************************************/
-bool HIPixelTrackFilter::operator() (const reco::Track* track,const PixelTrackFilter::Hits & recHits) const
-{
-	
 	if (!track) return false; 
 	if (track->chi2() > theChi2Max) return false; 
 	if ( (fabs(track->d0())-theTIPMax)/track->d0Error() > theNSigmaTipMaxTolerance) return false; 
