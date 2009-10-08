@@ -20,8 +20,9 @@ options = VarParsing.VarParsing ('standard')
 
 # setup any defaults you want
 options.output = 'test_out.root'
-options.files= '/store/relval/CMSSW_3_3_0_pre3/RelValHydjetQ_MinBias_4TeV/GEN-SIM-RAW/MC_31X_V8-v1/0015/DC571B73-43A1-DE11-BD0C-000423D98804.root'
+#options.files= '/store/relval/CMSSW_3_3_0_pre3/RelValHydjetQ_MinBias_4TeV/GEN-SIM-RAW/MC_31X_V8-v1/0015/DC571B73-43A1-DE11-BD0C-000423D98804.root'
 #options.files= '/store/relval/CMSSW_3_3_0_pre3/RelValHydjetQ_B0_4TeV/GEN-SIM-RAW/MC_31X_V8-v1/0015/FE2B9E7D-4CA1-DE11-9FA1-000423D6CA02.root'
+options.files= '/store/relval/CMSSW_3_3_0_pre5/RelValHydjetQ_B0_4TeV/GEN-SIM-RAW/MC_31X_V8-v1/0004/50F6B958-93AB-DE11-A3A6-001D09F2B2CF.root'
 options.maxEvents = 1 
 
 # get and parse the command line arguments
@@ -73,6 +74,8 @@ process.load("Configuration.StandardSequences.RawToDigi_cff")		    # RawToDigi
 process.load("Configuration.StandardSequences.ReconstructionHeavyIons_cff") # full heavy ion reconstruction
 
 #process.hiSelectedTracks.minZCut = 0.005
+#process.hiPixel3PrimTracks.FilterPSet.tipMax = 0.05
+#process.hiPixel3PrimTracks.FilterPSet.nSigmaTipMaxTolerance = 3.0
 
 ##############################################################################
 # Output EDM File
