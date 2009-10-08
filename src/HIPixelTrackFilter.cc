@@ -18,10 +18,8 @@ HIPixelTrackFilter::HIPixelTrackFilter (const edm::ParameterSet& ps, const edm::
 ClusterShapeTrackFilter(ps,es),
 theTIPMax( ps.getParameter<double>("tipMax") ),
 theNSigmaTipMaxTolerance( ps.getParameter<double>("nSigmaTipMaxTolerance")),
-//theLIPMax( ps.getParameter<double>("lipMax") ),
-//theNSigmaLipMaxTolerance( ps.getParameter<double>("nSigmaLipMaxTolerance")),
-theChi2Max( ps.getParameter<double>("chi2") )
-//theVertexCollection( ps.getParameter<string>("VertexCollection")),
+theChi2Max( ps.getParameter<double>("chi2") ),
+useClusterShape( ps.getParameter<bool>("useClusterShape") )
 { 
 }
 
@@ -32,29 +30,19 @@ HIPixelTrackFilter::~HIPixelTrackFilter()
 /*****************************************************************************/
 bool HIPixelTrackFilter::operator() (const reco::Track* track,const PixelTrackFilter::Hits & recHits) const
 {
-	
-	
-	// Get reco vertex 
-	/*
-	 edm::Handle<reco::VertexCollection> vc;
-	 ev.getByLabel(theVertexCollection, vc);
-	 const reco::VertexCollection * vertices = vc.product();
-	
-	 if(vertices->size()>0) {
-	   theVertex=vertices->begin();
-	 }
-	*/
 
 	if (!track) return false; 
 	if (track->chi2() > theChi2Max) return false; 
-	if ( (fabs(track->d0())-theTIPMax)/track->d0Error() > theNSigmaTipMaxTolerance) return false; 
 
-	//if (fabs(track->d0(theVertex->position())) > theTIPMax) return false;
-	//if (fabs(track->d0(theVertex->position())) / track->d0Error() > theNSigmaTipMaxTolerance) return false;
-	//if (fabs(track->dz(theVertex->position())) > theLIPMax) return false;
-	//if (fabs(track->dz(theVertex->position())) / track->dzError() > theNSigmaLipMaxTolerance) return false;
-			
-	bool ok = ClusterShapeTrackFilter::operator() (track,recHits);
+	double d0=0.0, d0sigma=0.0;
+	d0 = -1.*track->dxy(/*vtx*/);
+	d0sigma = track->d0Error();
+	
+	if (theTIPMax>0 && fabs(d0)>theTIPMax) return false;
+	if (theNSigmaTipMaxTolerance>0 && (fabs(d0)/d0sigma)>theNSigmaTipMaxTolerance) return false;
+	
+	bool ok = true;
+	if(useClusterShape) ok = ClusterShapeTrackFilter::operator() (track,recHits);
 	
 	return ok;
 }

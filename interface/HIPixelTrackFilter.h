@@ -13,11 +13,8 @@ public:
 	virtual bool operator() (const reco::Track*, const PixelTrackFilter::Hits & hits) const;
 private:
 	double theTIPMax, theNSigmaTipMaxTolerance;
-	//double theLIPMax, theNSigmaLipMaxTolerance;
 	double theChi2Max;	
-	//std::string theVertexCollection; 	
-	//reco::Vertex theVertex;
-
+	bool useClusterShape;
 };
 
 #endif

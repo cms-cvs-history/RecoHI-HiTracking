@@ -24,37 +24,35 @@ hiPixel3PrimTracks = cms.EDFilter("PixelTrackProducer",
 	  )
     ),
      
-	# Ordered Hits
+    # Ordered Hits
     OrderedHitsFactoryPSet = cms.PSet( 
-      ComponentName = cms.string( "StandardHitTripletGenerator" ),
+          ComponentName = cms.string( "StandardHitTripletGenerator" ),
 	  SeedingLayers = cms.string( "PixelLayerTriplets" ),
-      GeneratorPSet = cms.PSet( 
+          GeneratorPSet = cms.PSet( 
 		PixelTripletHLTGenerator
-      )
+          )
     ),
 	
-	# Fitter
+    # Fitter
     FitterPSet = cms.PSet( 
 	  ComponentName = cms.string('PixelFitterByHelixProjections'),
 	  TTRHBuilder = cms.string('TTRHBuilderWithoutAngle4PixelTriplets')
     ),
 	
-	# Filter
-	useFilterWithES = cms.bool( True ),
-    FilterPSet = cms.PSet( 
-      nSigmaTipMaxTolerance = cms.double( 0.0 ),
-      #ComponentName = cms.string( "PixelTrackFilterByKinematics" ),
-	  ComponentName = cms.string( "HIPixelTrackFilter" ),
-	  #ComponentName = cms.string( "ClusterShapeTrackFilter" ),
-      #nSigmaInvPtTolerance = cms.double( 0.0 ),
-      ptMin = cms.double( 1.5 ),
-      tipMax = cms.double( 0.2 ),
-	  chi2 = cms.double( 1000.0 )
+    # Filter
+    useFilterWithES = cms.bool( True ),
+    FilterPSet = cms.PSet(
+          ComponentName = cms.string( "HIPixelTrackFilter" ),
+          ptMin = cms.double( 1.5 ),
+          chi2 = cms.double( 1000.0 ),
+          useClusterShape = cms.bool( False ),
+          VertexCollection = cms.string("hiSelectedVertex"),
+          nSigmaTipMaxTolerance = cms.double( 6.0 ), # d0 w.r.t. (0,0)
+          tipMax = cms.double( 0.3 )
     ),
 	
-	# Cleaner
+    # Cleaner
     CleanerPSet = cms.PSet(  
-	  #ComponentName = cms.string( "PixelTrackCleanerBySharedHits" ) 
-	  ComponentName = cms.string( "none" )
-	)
+	  ComponentName = cms.string( "TrackCleaner" )
+    )
 )
