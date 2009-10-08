@@ -46,7 +46,6 @@ hiPixel3PrimTracks = cms.EDFilter("PixelTrackProducer",
           ptMin = cms.double( 1.5 ),
           chi2 = cms.double( 1000.0 ),
           useClusterShape = cms.bool( False ),
-          VertexCollection = cms.string("hiSelectedVertex"),
           nSigmaTipMaxTolerance = cms.double( 6.0 ), # d0 w.r.t. (0,0)
           tipMax = cms.double( 0.3 )
     ),
