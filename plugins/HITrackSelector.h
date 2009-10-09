@@ -16,7 +16,6 @@
 using namespace std;
 using namespace edm;
 
-
 /**
  Selector to select final tracks that pass certain kinematic cuts based on best vertex
  **/
@@ -87,8 +86,7 @@ class HITrackSelector
 			       fabs(d0/d0sigma) < maxD0Significance_ && // keep only tracks with D0 significance less than cut
 			       fabs(trk->dz(vtxPoint)) <  max(dzsigma*nSigmaZ_,minZCut_) && // keep all tracks within minZCut or within nSigmaZ sigmas of vertex
 			       trk->numberOfValidHits() >= minValidHits_  && // keep tracks with more than minValidHits_
-			       TMath::Prob(trk->chi2(),trk->ndof()) > minChi2Prob_ // keep tracks with chi2 probability above minChi2Prob_
-			       //***FIX ME***//
+			       TMath::Prob(trk->chi2(),(int)trk->ndof()) > minChi2Prob_ // keep tracks with chi2 probability above minChi2Prob_
 			       ) 
 			    {
 			      LogTrace("HeavyIonVertexing") << "SELECTED: dz=" << trk->dz(vtxPoint) << "\t d0/d0err=" << d0/d0sigma  << "\t pt=" << trk->pt();
