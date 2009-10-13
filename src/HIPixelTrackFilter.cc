@@ -22,7 +22,9 @@ theNSigmaLipMaxTolerance( ps.getParameter<double>("nSigmaLipMaxTolerance")),
 theChi2Max( ps.getParameter<double>("chi2") ),
 useClusterShape( ps.getParameter<bool>("useClusterShape") ),
 theVertexCollection( ps.getParameter<string>("VertexCollection")),
-theVertices(0)
+theVertices(0),
+theEventNo(0),
+theRunNo(0)
 { 
 }
 
@@ -31,8 +33,13 @@ HIPixelTrackFilter::~HIPixelTrackFilter()
 { }
 
 /*****************************************************************************/
-bool HIPixelTrackFilter::operator() (const reco::Track* track,const PixelTrackFilter::Hits & recHits) const
+bool HIPixelTrackFilter::operator() (const reco::Track* track,const PixelTrackFilter::Hits & recHits, const edm::Event& ev) const
 {
+
+  //std::cout << "Filtering in HIPixelTrackFilter" << std::endl;
+
+  if (theEventNo==0 || theRunNo==0 || ev.id().run() != theRunNo || ev.id().event() != theEventNo ) 
+    getEventInfo(ev);
 
   if (!track) return false; 
   if (track->chi2() > theChi2Max) return false; 
@@ -67,13 +74,17 @@ bool HIPixelTrackFilter::operator() (const reco::Track* track,const PixelTrackFi
 }
 
 /*****************************************************************************/
-void HIPixelTrackFilter::updateEvent(edm::Event& ev)
+void HIPixelTrackFilter::getEventInfo(const edm::Event& ev) const
 {
   
+  // update event number cache
+  theEventNo=ev.id().event();
+  theRunNo=ev.id().run();
+
   // Get reco vertices
   edm::Handle<reco::VertexCollection> vc;
   ev.getByLabel(theVertexCollection, vc);
-  theVertices = vc.product();
+  theVertices =  const_cast<reco::VertexCollection*>(vc.product());
   
   if(theVertices->size()>0) {
     LogInfo("HeavyIonVertexing") 
